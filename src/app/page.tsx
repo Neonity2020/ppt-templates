@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PPTCard } from '@/components/ppt-card'
 import { pptTemplates } from '@/lib/data'
+import { loadImageWithCache } from '@/lib/image-cache'
 import { 
   Dialog, 
   DialogContent, 
@@ -16,6 +17,7 @@ import { PPTTemplate } from '@/lib/types'
 export default function Home() {
   const [selectedTemplate, setSelectedTemplate] = useState<PPTTemplate | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [selectedTemplateImage, setSelectedTemplateImage] = useState<string>('')
 
   // 获取所有唯一的标签
   const allTags = Array.from(
@@ -36,6 +38,17 @@ export default function Home() {
         : [...prev, tag]
     )
   }
+
+  useEffect(() => {
+    async function loadTemplateImage() {
+      if (selectedTemplate) {
+        const cachedImage = await loadImageWithCache(selectedTemplate.thumbnailUrl);
+        setSelectedTemplateImage(cachedImage);
+      }
+    }
+
+    loadTemplateImage();
+  }, [selectedTemplate]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -89,7 +102,7 @@ export default function Home() {
             </DialogHeader>
             <div className="space-y-4">
               <Image 
-                src={selectedTemplate.thumbnailUrl}
+                src={selectedTemplateImage}
                 alt={selectedTemplate.title}
                 width={600}
                 height={400}

@@ -1,4 +1,6 @@
 import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { loadImageWithCache } from '@/lib/image-cache'
 import { 
   Card, 
   CardContent, 
@@ -12,6 +14,17 @@ interface PPTCardProps {
 }
 
 export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
+  const [imageSrc, setImageSrc] = useState(template.thumbnailUrl);
+
+  useEffect(() => {
+    async function loadCachedImage() {
+      const cachedImage = await loadImageWithCache(template.thumbnailUrl);
+      setImageSrc(cachedImage);
+    }
+
+    loadCachedImage();
+  }, [template.thumbnailUrl]);
+
   return (
     <Card className="overflow-hidden">
       <div 
@@ -19,7 +32,7 @@ export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
         onClick={onDetailClick}
       >
         <Image
-          src={template.thumbnailUrl}
+          src={imageSrc}
           alt={template.title}
           fill
           className="object-cover"
