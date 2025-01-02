@@ -16,5 +16,13 @@ export const pptTemplates: PPTTemplate[] = [
     downloadLink: 'https://www.alipan.com/s/bfdSgRtufqD',
     tags: ['商务', '简约', '蓝色']
   },
+  {
+    id: '2',
+    title: '创意营销方案模板',
+    description: '适合市场营销提案的现代风格模板',
+    thumbnailUrl: '/covers/cover_green02.png',
+    downloadLink: 'https://www.alipan.com/s/1rnhgGNiPxu',
+    tags: ['营销', '创意', '现代']
+  },
   // 添加更多模板...
 ] 
