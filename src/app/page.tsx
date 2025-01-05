@@ -43,7 +43,7 @@ export default function Home() {
     async function loadTemplateImage() {
       if (selectedTemplate) {
         const cachedImage = await loadImageWithCache(selectedTemplate.thumbnailUrl);
-        setSelectedTemplateImage(cachedImage);
+        setSelectedTemplateImage(cachedImage || '/default-image.png');
       }
     }
 

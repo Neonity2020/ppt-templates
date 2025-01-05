@@ -10,7 +10,7 @@ export function getCachedImage(url: string): string | null {
   return localStorage.getItem(`image_cache_${url}`);
 }
 
-export async function loadImageWithCache(url: string): Promise<string> {
+export async function loadImageWithCache(url: string): Promise<string | null> {
   // 尝试从缓存获取
   const cachedImage = getCachedImage(url);
   if (cachedImage) {
@@ -33,6 +33,6 @@ export async function loadImageWithCache(url: string): Promise<string> {
     return imageData;
   } catch (error) {
     console.error('图片加载失败', error);
-    return url; // 返回原始URL作为备选
+    return null;
   }
 } 

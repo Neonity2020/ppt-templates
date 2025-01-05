@@ -19,7 +19,7 @@ export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
   useEffect(() => {
     async function loadCachedImage() {
       const cachedImage = await loadImageWithCache(template.thumbnailUrl);
-      setImageSrc(cachedImage);
+      setImageSrc(cachedImage || '/default-image.png');
     }
 
     loadCachedImage();
