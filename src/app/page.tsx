@@ -17,7 +17,7 @@ import { PPTTemplate } from '@/lib/types'
 export default function Home() {
   const [selectedTemplate, setSelectedTemplate] = useState<PPTTemplate | null>(null)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [selectedTemplateImage, setSelectedTemplateImage] = useState<string>('')
+  const [selectedTemplateImage, setSelectedTemplateImage] = useState<string | null>(null)
 
   // 获取所有唯一的标签
   const allTags = Array.from(
@@ -44,6 +44,8 @@ export default function Home() {
       if (selectedTemplate) {
         const cachedImage = await loadImageWithCache(selectedTemplate.thumbnailUrl);
         setSelectedTemplateImage(cachedImage || '/default-image.png');
+      } else {
+        setSelectedTemplateImage(null);
       }
     }
 
@@ -101,13 +103,15 @@ export default function Home() {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <Image 
-                src={selectedTemplateImage}
-                alt={selectedTemplate.title}
-                width={600}
-                height={400}
-                className="rounded-md"
-              />
+              {selectedTemplateImage && (
+                <Image 
+                  src={selectedTemplateImage}
+                  alt={selectedTemplate.title}
+                  width={600}
+                  height={400}
+                  className="rounded-md"
+                />
+              )}
               <div className="flex justify-between items-center">
                 <div className="flex gap-2">
                   {selectedTemplate.tags.map(tag => (
