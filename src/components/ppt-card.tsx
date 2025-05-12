@@ -14,12 +14,13 @@ interface PPTCardProps {
 }
 
 export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
-  const [imageSrc, setImageSrc] = useState(template.thumbnailUrl);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadCachedImage() {
+      if (!template.thumbnailUrl?.trim()) return;
       const cachedImage = await loadImageWithCache(template.thumbnailUrl);
-      setImageSrc(cachedImage || '/default-image.png');
+      setImageSrc(cachedImage || null);
     }
 
     loadCachedImage();
@@ -31,12 +32,19 @@ export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
         className="relative aspect-video cursor-pointer hover:opacity-90 transition-opacity"
         onClick={onDetailClick}
       >
-        <Image
-          src={imageSrc}
-          alt={template.title}
-          fill
-          className="object-cover"
-        />
+        {imageSrc && (
+          <Image
+            src={imageSrc}
+            alt={template.title}
+            fill
+            className="object-cover"
+          />
+        )}
+        {!imageSrc && (
+          <div className="w-full h-full bg-muted flex items-center justify-center">
+            <span className="text-muted-foreground">No image available</span>
+          </div>
+        )}
       </div>
       
       <CardContent className="p-4">
@@ -62,4 +70,4 @@ export function PPTCard({ template, onDetailClick, onTagClick }: PPTCardProps) {
       </CardContent>
     </Card>
   )
-} 
+}
